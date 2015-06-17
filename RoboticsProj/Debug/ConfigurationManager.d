@@ -1,0 +1,1 @@
+ConfigurationManager.d: ../ConfigurationManager.cpp

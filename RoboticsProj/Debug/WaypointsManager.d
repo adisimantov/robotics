@@ -1,0 +1,1 @@
+WaypointsManager.d: ../WaypointsManager.cpp

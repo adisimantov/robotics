@@ -1,0 +1,1 @@
+LocalizationManager.d: ../LocalizationManager.cpp

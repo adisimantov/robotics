@@ -1,1 +1,0 @@
-Manager.d: ../Manager.cpp
