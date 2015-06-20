@@ -1,10 +1,175 @@
 /*
- * map.cpp
+ * Map.cpp
  *
  *  Created on: Jun 17, 2015
  *      Author: colman
  */
 
+#include "Map.h"
+#include "lodepng.h"
+#include "pngUtil.h"
+#include "math.h"
 
+using namespace std;
 
+// Constructor
+Map::Map(int nRowSize, int nColSize, double nMapRes, double nGridRes)
+{
+	// Initialize map attributes
+	this->row_size = nRowSize;
+	this->col_size = nColSize;
+	this->map_res  = nMapRes;
+	this->grid_res = nGridRes;
 
+	// Build the grid and initialize in -1(UNKNOWN)
+	this->cMap = new cell*[nRowSize];
+
+	// Initialize the map in -1(UNKNOWN)
+	for(int nRowI=0; nRowI<nRowSize; nRowI++)
+	{
+		this->cMap[nRowI] = new cell[nColSize];
+		for(int nColI=0; nColI<nColSize; nColI++)
+		{
+			this->cMap[nRowI][nColI] = UNKNOWN;
+		}
+	}
+}
+
+Map::Map(const Map& m,int nRowSize, int nColSize, double nMapRes, double nGridRes)
+{
+	// Initialize map attributes
+	this->row_size = nRowSize;
+	this->col_size = nColSize;
+	this->map_res  = nMapRes;
+	this->grid_res = nGridRes;
+
+	// Build the grid and initialize it according to the m parameter
+	this->cMap = new cell*[nRowSize];
+
+	// Initialize the map in -1(UNKNOWN)
+	for(int nRowI=0; nRowI<nRowSize; nRowI++)
+	{
+		this->cMap[nRowI] = new cell[nColSize];
+		for(int nColI=0; nColI<nColSize; nColI++)
+		{
+			this->cMap[nRowI][nColI] = m.cMap[nRowI][nColI];
+		}
+	}
+}
+
+void Map::loadPngToGrid(const char* filename)
+{
+	std::vector<unsigned char> image; //the raw pixels
+	unsigned width, height;
+	unsigned x, y;
+
+	//decode
+	unsigned error = lodepng::decode(image, width, height, filename);
+
+	//if there's an error, display it
+	if (error)
+		std::cout << "decoder error " << error << ": "
+				<< lodepng_error_text(error) << std::endl;
+
+	std::vector<unsigned char> navImage; //the raw pixels
+
+	navImage.resize(this->row_size * this->col_size * 4);
+
+	// Put on grid
+	cell cMapStatus, cGridStatus;
+	//unsigned char color;
+	int nDeference = this->grid_res / this->map_res;//this->map_res / this->grid_res;
+	for(y = 0; y < height; y++)
+	{
+		for(x = 0; x < width; x++)
+		{
+			cGridStatus = this->cMap[x / nDeference][y / nDeference];
+			if (cGridStatus != OCCUPIED)
+			{
+				/**if (image[y * width * 4 + x * 4 + 0] == 255
+				          && image[y * width * 4 + x * 4 + 1] == 255
+				          && image[y * width * 4 + x * 4 + 2] == 255)*/
+				if (image[y * width * 4 + x * 4 + 0]
+				  || image[y * width * 4 + x * 4 + 1]
+				  || image[y * width * 4 + x * 4 + 2])
+				{
+					cMapStatus = FREE;
+				}
+
+				else
+				{
+					cMapStatus = OCCUPIED;
+
+				}
+				this->cMap[x / nDeference][y / nDeference] = cMapStatus;
+			}
+		}
+	}
+
+	unsigned char color;
+
+	for (y = 0; y < this->col_size; y++)
+		for (x = 0; x < this->row_size; x++)
+		{
+			if (this->cMap[x][y] == OCCUPIED)
+				color = 0;
+			else
+				color = 255;
+			navImage[y * this->row_size * 4 + x * 4 + 0] = color;
+			navImage[y * this->row_size * 4 + x * 4 + 1] = color;
+			navImage[y * this->row_size * 4 + x * 4 + 2] = color;
+			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
+		}
+	encodeOneStep("NoyTest.png", navImage, this->row_size, this->col_size);
+
+}
+
+void Map::inflateMap(double fRobotX, double fRobotY)
+{
+	int x,y,inflateX,inflateY;
+	int nRobotXGrid, nRobotYGrid;
+	nRobotXGrid = ceil(fRobotX / this->grid_res);
+	nRobotYGrid = ceil(fRobotY / this->grid_res);
+
+	for(x = 0; x < this->row_size; x++)
+	{
+		for(y = 0; y < this->col_size; y++)
+		{
+			if(this->cMap[x][y] == OCCUPIED)
+			{
+				// Inflate the cell
+				for(inflateX = x - nRobotXGrid; inflateX < x + nRobotXGrid; inflateX++)
+				{
+					if(inflateX >= 0 && inflateX < this->row_size)
+					{
+					for(inflateY = y - nRobotYGrid; inflateY < y + nRobotYGrid; inflateY++)
+					{
+						if(inflateY >= 0 && inflateY < this->col_size)
+						{
+							this->cMap[inflateX][inflateY] = OCCUPIED;
+						}
+					}
+					}
+				}
+			}
+		}
+	}
+	std::vector<unsigned char> navImage; //the raw pixels
+	navImage.resize(this->row_size * this->col_size * 4);
+	unsigned char color;
+
+	for (y = 0; y < this->col_size; y++)
+		for (x = 0; x < this->row_size; x++)
+		{
+			if (this->cMap[x][y] == OCCUPIED)
+				color = 0;
+			else
+				color = 255;
+			navImage[y * this->row_size * 4 + x * 4 + 0] = color;
+			navImage[y * this->row_size * 4 + x * 4 + 1] = color;
+			navImage[y * this->row_size * 4 + x * 4 + 2] = color;
+			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
+		}
+
+	encodeOneStep("InflateTest.png", navImage, this->row_size, this->col_size);
+}
