@@ -1,0 +1,10 @@
+map: ~/Desktop/roboticLabMap.png
+location x: 362 
+location y: 305
+location angle: 20
+goal x: 169 
+goal y: 138
+robotSizeW: 30 
+robotSizeH: 30
+MapResolutionCM: 2.5
+GridResolutionCM: 10
