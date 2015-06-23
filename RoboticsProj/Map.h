@@ -45,6 +45,8 @@ public:
 	void realPosToMapPos(double fX, double fY, position& pMap);
 	void mapPosToRealPos(double fX, double fY, position& pReal);
 	void loadPngToGrid(const char* filename);
+	int  getCellStatus(int nX,int nY) const;
+	void updateCellStatus(int nX,int nY, cell cStatus);
 };
 
 #endif /* MAP_H_ */

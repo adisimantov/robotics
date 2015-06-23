@@ -35,6 +35,7 @@ Map::Map(int nRowSize, int nColSize, double nMapRes, double nGridRes)
 	}
 }
 
+//TODO: AA NOY get only map
 Map::Map(const Map& m,int nRowSize, int nColSize, double nMapRes, double nGridRes)
 {
 	// Initialize map attributes
@@ -106,6 +107,8 @@ void Map::loadPngToGrid(const char* filename)
 		}
 	}
 
+	std::vector<unsigned char>().swap(image);
+
 	unsigned char color;
 
 	for (y = 0; y < this->col_size; y++)
@@ -121,6 +124,8 @@ void Map::loadPngToGrid(const char* filename)
 			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
 		}
 	encodeOneStep("NoyTest.png", navImage, this->row_size, this->col_size);
+
+	std::vector<unsigned char>().swap(navImage);
 
 }
 
@@ -172,4 +177,15 @@ void Map::inflateMap(double fRobotX, double fRobotY)
 		}
 
 	encodeOneStep("InflateTest.png", navImage, this->row_size, this->col_size);
+	std::vector<unsigned char>().swap(navImage);
+}
+
+int  Map::getCellStatus(int nX,int nY) const
+{
+	return this->cMap[nX][nY];
+}
+
+void Map::updateCellStatus(int nX,int nY, cell cStatus)
+{
+	this->cMap[nX][nY] = cStatus;
 }
