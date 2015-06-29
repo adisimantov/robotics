@@ -189,3 +189,42 @@ void Map::updateCellStatus(int nX,int nY, cell cStatus)
 {
 	this->cMap[nX][nY] = cStatus;
 }
+
+void Map::printParticle(list<int*> particlesList)
+{
+	int *currNode;
+	unsigned x, y;
+	unsigned char color;
+	std::vector<unsigned char> navImage; //the raw pixels
+
+	navImage.resize(this->row_size * this->col_size * 4);
+
+		for (y = 0; y < this->col_size; y++)
+			for (x = 0; x < this->row_size; x++)
+			{
+				if (this->cMap[x][y] == OCCUPIED)
+					color = 0;
+				else
+					color = 255;
+				navImage[y * this->row_size * 4 + x * 4 + 0] = color;
+				navImage[y * this->row_size * 4 + x * 4 + 1] = color;
+				navImage[y * this->row_size * 4 + x * 4 + 2] = color;
+				navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
+
+			}
+		while(!particlesList.empty())
+		{
+			currNode = particlesList.front();
+			x=currNode[0];
+			y=currNode[1];
+			navImage[y * this->row_size * 4 + x * 4 + 0] = 0;
+			navImage[y * this->row_size * 4 + x * 4 + 1] = 0;
+			navImage[y * this->row_size * 4 + x * 4 + 2] = 255;
+			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
+			particlesList.pop_front();
+			delete currNode;
+		}
+		encodeOneStep("NoyTest.png", navImage, this->row_size, this->col_size);
+
+		std::vector<unsigned char>().swap(navImage);
+}

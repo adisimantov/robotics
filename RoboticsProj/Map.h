@@ -9,6 +9,9 @@
 #define MAP_H_
 
 #include "Robot.h"
+#include <list>
+
+using namespace std;
 
 class Map
 {
@@ -47,6 +50,7 @@ public:
 	void loadPngToGrid(const char* filename);
 	int  getCellStatus(int nX,int nY) const;
 	void updateCellStatus(int nX,int nY, cell cStatus);
+	void printParticle(list<int*> particlesList);
 };
 
 #endif /* MAP_H_ */
