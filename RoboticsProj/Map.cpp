@@ -180,6 +180,19 @@ void Map::inflateMap(double fRobotX, double fRobotY)
 	std::vector<unsigned char>().swap(navImage);
 }
 
+void Map::realPosToMapPos(double fX, double fY, position& pMap)
+{
+	pMap.nX = fX / map_res;
+	pMap.nY = fY / map_res;
+}
+
+void Map::mapPosToRealPos(double fX, double fY, position& pReal)
+{
+	pReal.nX = fX * map_res;
+	pReal.nY =  fY * map_res;
+
+}
+
 int  Map::getCellStatus(int nX,int nY) const
 {
 	return this->cMap[nX][nY];
