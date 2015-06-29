@@ -15,7 +15,7 @@ Robot::Robot(char* ip, int port) {
 
 	_pp->SetMotorEnable(true);
 	//For fixing Player's reading BUG
-	for(int i=0;i<15;i++)
+	for(int i=0;i<30;i++)
 		read();
 }
 
@@ -72,7 +72,20 @@ int Robot::Move(){
 	return 0;
 }
 
+// TODO ADI remove this function!
+int Robot::getIndexByAngle(float angle){
 
+	return ((angle + MIN_ANGLE) / ANGULAR_RESULUTION);
+}
+float Robot::getAngleByIndex(int index){
+
+		return ((float)index * ANGULAR_RESULUTION - 30);
+
+}
+float Robot::getRadianByIndex(int index){
+
+		return (getAngleByIndex(index) * M_PI / 180);
+}
 
 Robot::~Robot() {
 	delete _pc;

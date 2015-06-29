@@ -8,6 +8,7 @@
 #ifndef ROBOT_H_
 #define ROBOT_H_
 #include <libplayerc++/playerc++.h>
+#include "math.h"
 
 using namespace PlayerCc;
 
@@ -24,12 +25,31 @@ class Robot {
 public:
 	Robot(char* ip, int port);
 	int Move();
+	LaserProxy* getLaserProxy(){
+		return this->_lp;
+	}
+	PlayerClient* getPlayerClient(){
+		return this->_pc;
+	}
+	Position2dProxy* getPositionProxy(){
+		return this->_pp;
+	}
+
 	void read() {
-		_pc->Read();
+		this->_pc->Read();
 	}
 	void setSpeed(float xSpeed, float angularSpeed) {
-		_pp->SetSpeed(xSpeed, angularSpeed);
+		this->_pp->SetSpeed(xSpeed, angularSpeed);
 	}
+	double getPosX() {
+		return	this->_pp->GetXPos();
+	}
+	double getPosY() {
+			return	this->_pp->GetYPos();
+		}
+	double getYaw() {
+			return	this->_pp->GetYaw();
+		}
 	bool isRightFree() {
 		if ((*_lp)[50] > 0.5)
 			return true;
@@ -43,10 +63,9 @@ public:
 			return false;
 	}
 
-	int getIndexByAngle(int angle){
-
-		return ((angle + MIN_ANGLE) / ANGULAR_RESULUTION);
-	}
+	static int getIndexByAngle(float angle);
+	static float getAngleByIndex(int index);
+	static float getRadianByIndex(int index);
 
 	virtual ~Robot();
 };

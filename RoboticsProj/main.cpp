@@ -16,10 +16,15 @@ int main()
 
 	Robot robot("localhost",6665);
 
-	/*Plan plnOA(&robot);
-	Manager manager(&robot, &plnOA);
-	manager.run();*/
+	Plan plnOA(&robot);
+	Map map(138,95,2.5,10);
+	map.loadPngToGrid("roboticLabMap.png");
+	Map inflatedMap(map,138,95,2.5,10);
+	inflatedMap.inflateMap(30,30);
 
-	robot.Move();
+	Manager manager(&robot, &plnOA, &map, &inflatedMap);
+	manager.run();
+
+	//robot.Move();
 
 }
