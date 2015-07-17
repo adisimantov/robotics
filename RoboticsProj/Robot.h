@@ -14,8 +14,7 @@ using namespace PlayerCc;
 
 
 #define SAMPLES_NUM 666
-#define MIN_ANGLE 120
-#define MAX_ANGLE 360
+#define MIN_ANGLE -120
 #define ANGULAR_RESULUTION 0.36
 
 class Robot {
@@ -24,7 +23,6 @@ class Robot {
 	LaserProxy* _lp;
 public:
 	Robot(char* ip, int port);
-	int Move();
 	LaserProxy* getLaserProxy(){
 		return this->_lp;
 	}

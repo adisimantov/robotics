@@ -15,8 +15,8 @@
 //using namespace std;
 
 //Dimensions
-const int horizontalSize = 5; //X
-const int verticalSize = 5;   //Y
+const int horizontalSize = 556; //X
+const int verticalSize = 380;   //Y
 
 //Directions
 /**const int dir = 4;
@@ -28,7 +28,7 @@ static int dirX[dir] = {1,0,-1,0,-1,-1,1,1};
 static int dirY[dir] = {0,1,0,-1,-1,1,-1,1};
 
 
-static int came_from[horizontalSize][verticalSize];
+//static int came_from[horizontalSize][verticalSize];
 list<int*> PathPlanner::a_star_algoritm(Map::position pStart, Map::position pGoal,
 									const Map& map)
 {
@@ -37,6 +37,8 @@ list<int*> PathPlanner::a_star_algoritm(Map::position pStart, Map::position pGoa
 	static int **closeGrid = new int*[map.row_size];
 	static int **openGrid = new int*[map.row_size];
 	static int **dir_map = new int*[map.row_size];
+	//static int **came_from = new int*[map.row_size];
+
 
 	Node *startNode, *currentNode, *neighborNode;
 	int neighborX,neighborY,index=0;
@@ -48,6 +50,8 @@ list<int*> PathPlanner::a_star_algoritm(Map::position pStart, Map::position pGoa
 		closeGrid[nRowI] = new int[map.col_size];
 		openGrid[nRowI] = new int[map.col_size];
 		dir_map[nRowI] = new int[map.col_size];
+		//came_from[nRowI] = new int[map.col_size];
+
 		for(int nColI=0; nColI<map.col_size; nColI++)
 		{
 			closeGrid[nRowI][nColI] = 0;
@@ -92,7 +96,7 @@ list<int*> PathPlanner::a_star_algoritm(Map::position pStart, Map::position pGoa
 
 				//Check if the cell is valid
 				if(neighborX >= 0 && neighborY >= 0 &&
-					neighborX < horizontalSize && neighborY < verticalSize)
+					neighborX < map.row_size && neighborY < map.col_size)
 				{
 					if(map.getCellStatus(neighborX,neighborY) != Map::OCCUPIED &&
 					   closeGrid[neighborX][neighborY] == 0)
@@ -155,7 +159,7 @@ list<int*> PathPlanner::a_star_algoritm(Map::position pStart, Map::position pGoa
 list<int*> PathPlanner::reconstruct_path(int x,int y, int** dir_map)
 {
 	list<int*> lPath;
-	int *currNode;
+	int *currNode = new int[2];
 
 	string path;
 	stringstream ss;

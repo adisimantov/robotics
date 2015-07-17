@@ -14,10 +14,10 @@
 
 #define LARGE_ANGLE 5.0
 #define SMALL_ANGLE 0.5
-#define SHORT_DIST 30
-#define LONG_DIST 570
+#define SHORT_DIST 3
+#define LONG_DIST 57
 //TODO: ADI find normalize factor
-#define NORMALIZE_FACTOR 0.8
+#define NORMALIZE_FACTOR 1.2
 
 class Particle
 {
@@ -35,13 +35,15 @@ public:
     Particle();
 
     // Properties
+    Map::position getPositionOnGrid() const;
+
     double getBelief() const{
     	return this->_Bel;
     }
-    int getX() const{
+    double getX() const{
     	return this->_X;
     }
-    int getY() const{
+    double getY() const{
     	return this->_Y;
     }
     double getYaw() const{
@@ -55,6 +57,7 @@ public:
     void update(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser);
     float probByMov(double deltaX, double deltaY, double deltaYaw);
     float probByScan(LaserProxy* laser);
+
 
 	virtual ~Particle();
 

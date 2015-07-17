@@ -11,16 +11,18 @@
 #include "Robot.h"
 #include "Map.h"
 #include "LocalizationManager.h"
-
+#include "PathPlanner.h"
+#include "ConfigurationManager.h"
 class Manager {
 private:
 	Behavior* _curr;
 	Robot* _robot;
 	Map* _regularMap;
 	Map* _inflatedMap;
+	LocalizationManager* _lm;
 
 public:
-	Manager(Robot* robot, Plan* pln, Map* map, Map* inflatedMap);
+	Manager(Robot* robot, Map* map, Map* inflatedMap);
 	void run();
 	virtual ~Manager();
 };

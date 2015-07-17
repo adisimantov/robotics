@@ -42,14 +42,21 @@ private:
 public:
 	Map(int nRowSize, int nColSize, double nMapRes, double nGridRes);
 	Map(const Map& m, int nRowSize, int nColSize, double nMapRes, double nGridRes);
+	Map(const char* filename);
 
 	void readMapFromPngIntoGrid();
-	void inflateMap(double fRobotX, double fRobotY);
+	Map inflateMap(double fRobotX, double fRobotY);
 	void realPosToMapPos(double fX, double fY, position& pMap);
 	void mapPosToRealPos(double fX, double fY, position& pReal);
+	void realPosToMapPos(position& pReal, position& pMap);
+	void mapPosToRealPos(position& pMap, position& pReal);
+	void MapPosToGridPos(double fX, double fY, position& pMap);
+	void MapPosToGridPos(position& pGrid, position& pMap);
+	void gridPosToMapPos(double fX, double fY, position& pReal);
 	void loadPngToGrid(const char* filename);
 	int  getCellStatus(int nX,int nY) const;
 	void updateCellStatus(int nX,int nY, cell cStatus);
+	void printParticle(list<position> particlesList);
 	void printParticle(list<int*> particlesList);
 };
 

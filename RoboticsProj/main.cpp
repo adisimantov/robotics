@@ -7,24 +7,24 @@
 #include "Robot.h"
 #include "Manager.h"
 #include "pngUtil.h"
+#include "ConfigurationManager.h"
 
 #include "Plans/Plan.h"
 int main()
 {
 
-	//ConvertMapBlackToWhiteAndWhiteToBlack("/usr/robotics/PcBotWorld/hospital_section.png");
+	/*float angle = atan2(0 + 1, 0 - 1);
+	//angle += (0.25 * M_PI);
 
+	cout << angle << endl;*/
 	Robot robot("localhost",6665);
 
-	Plan plnOA(&robot);
-	Map map(138,95,2.5,10);
-	map.loadPngToGrid("roboticLabMap.png");
-	Map inflatedMap(map,138,95,2.5,10);
-	inflatedMap.inflateMap(30,30);
+	Map map("roboticLabMap.png");
+	Map mapInf = map.inflateMap(ConfigurationManager::getInstance()->getDRobotW(),
+				   ConfigurationManager::getInstance()->getDRobotH());
 
-	Manager manager(&robot, &plnOA, &map, &inflatedMap);
-	manager.run();
-
+	Manager manager(&robot, &map, &mapInf);
+//	manager.run();
 	//robot.Move();
 
 }

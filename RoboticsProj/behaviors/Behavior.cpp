@@ -9,9 +9,24 @@
 
 Behavior::Behavior(Robot* robot) {
 	_robot = robot;
+}
 
+Behavior*  Behavior::addBeh(Behavior* next)
+{
+	_behVect.push_back(next);
+	return next;
+}
+Behavior* Behavior::selectNext()
+{
+	//Run over vector and return first true startCond of the first behavior
+	for (vector<Behavior*>::iterator it = this->_behVect.begin(); it != this->_behVect.end(); it++){
+	    if ((*it)->startCond()){
+	    	return (*it);
+	    }
+	}
+	return NULL;
 }
 
 Behavior::~Behavior() {
-	// TODO Auto-generated destructor stub
+//TODO ADI delete vector!
 }
