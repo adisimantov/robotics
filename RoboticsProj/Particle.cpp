@@ -93,7 +93,7 @@ float Particle::probByScan(LaserProxy* laser){
 	     }*/
 		//cout << "laserBeam = " << dLaserBeam << " getCellStatus(" << gridPosObs.nX << "," << gridPosObs.nY << ")" << endl;
 
-		if (gridPosObs.nX >= 0 && gridPosObs.nY >= 0 && gridPosObs.nX < this->_Map->col_size && gridPosObs.nY < this->_Map->row_size){
+		if (gridPosObs.nX >= 0 && gridPosObs.nY >= 0 && gridPosObs.nX < this->_Map->row_size && gridPosObs.nY < this->_Map->col_size){
 				//cout << "grid check = (" << obsticlePosition.nX << "," << obsticlePosition.nY << ")" << endl;
 				l.push_back(gridPosObs);
 				cout << "laserBeam = " << dLaserBeam << " getCellStatus(" << gridPosObs.nX << "," << gridPosObs.nY <<
