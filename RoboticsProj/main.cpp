@@ -17,14 +17,21 @@ int main()
 	//angle += (0.25 * M_PI);
 
 	cout << angle << endl;*/
+	try{
+
 	Robot robot("localhost",6665);
 
 	Map map("roboticLabMap.png");
-	Map mapInf = map.inflateMap(ConfigurationManager::getInstance()->getDRobotW(),
-				   ConfigurationManager::getInstance()->getDRobotH());
+	Map mapInf = map.inflateMap(ConfigurationManager::getInstance()->getDRobotW()*1.2,
+				   ConfigurationManager::getInstance()->getDRobotH()*1.2);
 
 	Manager manager(&robot, &map, &mapInf);
-//	manager.run();
+	manager.run();
 	//robot.Move();
-
+	} catch (const std::exception& e)
+	{
+		cout << e.what() << endl;
+	}
 }
+
+

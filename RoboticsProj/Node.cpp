@@ -8,6 +8,7 @@ path =(direction+dir/2)%dir+path; //we work our way back * Node.cpp
 #include "Node.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "ConfigurationManager.h"
 
 /** constructor **/
 Node::Node(int x,int y, int d,int p)
@@ -40,11 +41,11 @@ int Node::getPriority() const {
 }
 
 void Node::updatePriority(const int & xDest, const int & yDest){
-    priority = distance + estimateDistance(xDest,yDest)*10;
+    priority = distance + estimateDistance(xDest,yDest)*ConfigurationManager::getInstance()->getDGridRes();
 }
 
 void Node::updateDistance(){//const int & direction
-    distance +=10;
+    distance +=ConfigurationManager::getInstance()->getDGridRes();
 }
 
 const int & Node::estimateDistance(const int & xDest, const int & yDest) const{
@@ -52,7 +53,8 @@ const int & Node::estimateDistance(const int & xDest, const int & yDest) const{
     xDistance=xDest-xPos;
     yDistance=yDest-yPos;
 
-    totalDistance=abs(xDistance)+abs(yDistance);
+    //totalDistance=abs(xDistance)+abs(yDistance);
+    totalDistance = sqrt(pow(xDistance,2) + pow(yDistance,2));
 
     return (totalDistance);
 }

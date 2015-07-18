@@ -17,7 +17,7 @@
 #define SHORT_DIST 3
 #define LONG_DIST 57
 //TODO: ADI find normalize factor
-#define NORMALIZE_FACTOR 1.2
+#define NORMALIZE_FACTOR 1.7
 
 class Particle
 {
@@ -55,9 +55,9 @@ public:
 
     // Methods
     void update(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser);
+    void updateBel(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser);
     float probByMov(double deltaX, double deltaY, double deltaYaw);
     float probByScan(LaserProxy* laser);
-
 
 	virtual ~Particle();
 

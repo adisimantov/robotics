@@ -96,8 +96,8 @@ float Particle::probByScan(LaserProxy* laser){
 		if (gridPosObs.nX >= 0 && gridPosObs.nY >= 0 && gridPosObs.nX < this->_Map->row_size && gridPosObs.nY < this->_Map->col_size){
 				//cout << "grid check = (" << obsticlePosition.nX << "," << obsticlePosition.nY << ")" << endl;
 				l.push_back(gridPosObs);
-				cout << "laserBeam = " << dLaserBeam << " getCellStatus(" << gridPosObs.nX << "," << gridPosObs.nY <<
-						") = " << this->_Map->getCellStatus(gridPosObs.nX, gridPosObs.nY) << endl;
+				//cout << "laserBeam = " << dLaserBeam << " getCellStatus(" << gridPosObs.nX << "," << gridPosObs.nY <<
+				//		") = " << this->_Map->getCellStatus(gridPosObs.nX, gridPosObs.nY) << endl;
 				if (dLaserBeam == 4 && (this->_Map->getCellStatus(gridPosObs.nX, gridPosObs.nY) == Map::FREE)){
 					hits ++;
 				}
@@ -106,8 +106,8 @@ float Particle::probByScan(LaserProxy* laser){
 				}
 			}
 	}
-	this->_Map->printParticle(l);
-	cout << "hits = " << hits << endl;
+	//this->_Map->printParticle(l);
+	//cout << "hits = " << hits << endl;
 
 	return (hits / 667.0);
 }
@@ -120,14 +120,19 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw , LaserProxy
 		this->_Y += deltaY;
 		this->_Yaw += deltaYaw;
 
-		double predBel = this->_Bel * this->probByMov(deltaX,deltaY,deltaYaw);
-		this->_Bel = predBel * this->probByScan(laser) * NORMALIZE_FACTOR;
-		if (this->_Bel > 1){
-			this->_Bel = 1;
-		}
+		this->updateBel(deltaX, deltaY, deltaYaw, laser);
 	}
-
 }
+
+void Particle::updateBel(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser)
+{
+	double predBel = this->_Bel * this->probByMov(deltaX,deltaY,deltaYaw);
+	this->_Bel = predBel * this->probByScan(laser) * NORMALIZE_FACTOR;
+	if (this->_Bel > 1){
+		this->_Bel = 1;
+	}
+}
+
 
 Map::position Particle::getPositionOnGrid() const{
 
@@ -136,7 +141,7 @@ Map::position Particle::getPositionOnGrid() const{
 	position.nY = this->getY();
 	position.dAngle = this->getYaw();
 	Map::position grid;
-	this->_Map->MapPosToGridPos(position, grid);
+	this->_Map->MapPosToGridPos(grid, position);
 
 	return grid;
 }

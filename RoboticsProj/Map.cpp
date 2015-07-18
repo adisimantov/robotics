@@ -345,9 +345,9 @@ void Map::gridPosToMapPos(double fX, double fY, position& pReal)
 void Map::MapPosToGridPos(position& pGrid, position& pMap)
 {
 	int difrence = this->grid_res / this->map_res;
-	pMap.nX = pGrid.nX / difrence;
-	pMap.nY = pGrid.nY / difrence;
-	pMap.dAngle = pGrid.dAngle;
+	pGrid.nX = pMap.nX / difrence;
+	pGrid.nY = pMap.nY / difrence;
+	pGrid.dAngle = pMap.dAngle;
 }
 
 void Map::realPosToMapPos(position& pReal, position& pMap)

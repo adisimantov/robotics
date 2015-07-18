@@ -31,6 +31,7 @@ Manager::Manager(Robot* robot, Map* map, Map* inflatedMap) {
 	cout << "a star start"<< endl;
 	list<int*> aStarList = p.a_star_algoritm(start, end, *this->_inflatedMap);
 	cout << "a star finish"<< endl;
+	//map->printParticle(aStarList);
 	cout << "waypoint start"<< endl;
 	list<int*> waypointList = w.choosePoints(aStarList);
 	cout << "waypoint finish"<< endl;
@@ -48,6 +49,7 @@ Manager::Manager(Robot* robot, Map* map, Map* inflatedMap) {
 	this->_robot = robot;
 	this->_curr = pln->getStartPoint();
 }
+
 void Manager::run()
 {
 	double x,y,yaw, x1,y1,yaw1;
@@ -60,12 +62,12 @@ void Manager::run()
 	if(!(_curr->startCond()))
 		return;
 	_curr->action();
-	cout << "start manager loop" << endl;
+	//cout << "start manager loop" << endl;
 	while(_curr !=NULL)
 	{
 		_robot->read();
 
-		cout << "check stop cond" << endl;
+		//cout << "check stop cond" << endl;
 		while(_curr->stopCond() == false)
 		{
 			_robot->read();
@@ -73,8 +75,7 @@ void Manager::run()
 			x =  _robot->getPosX();
 			y =  _robot->getPosY();
 			yaw =  _robot->getYaw();
-			cout << "dx = " << (x - x1) << " dy " <<(y - y1) << " dyaw " << (yaw - yaw1) << endl;
-			_robot->setSpeed(0,0);
+			//cout << "dx = " << (x - x1) << " dy " <<(y - y1) << " dyaw " << (yaw - yaw1) << endl;
 			this->_lm->update((x - x1),(y - y1),(yaw - yaw1),_robot->getLaserProxy());
 			//this->_lm->update((0.234),(0.123),(0.1012),_robot->getLaserProxy());
 
@@ -87,6 +88,7 @@ void Manager::run()
 			_curr->action();
 		}
 		_curr = _curr->selectNext();
+		_robot->setSpeed(0,0);
 		_robot->read();
 	}
 }
