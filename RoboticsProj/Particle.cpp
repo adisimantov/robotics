@@ -98,10 +98,12 @@ float Particle::probByScan(LaserProxy* laser){
 				l.push_back(gridPosObs);
 				//cout << "laserBeam = " << dLaserBeam << " getCellStatus(" << gridPosObs.nX << "," << gridPosObs.nY <<
 				//		") = " << this->_Map->getCellStatus(gridPosObs.nX, gridPosObs.nY) << endl;
-				if (dLaserBeam == 4 && (this->_Map->getCellStatus(gridPosObs.nX, gridPosObs.nY) == Map::FREE)){
+				//int cellStatus = this->_Map->getCellStatus(gridPosObs.nY, gridPosObs.nX);
+				bool occupied = this->_Map->isOccupied(gridPosObs.nX,gridPosObs.nY);
+				if (dLaserBeam == 4 && !occupied /*(cellStatus == Map::FREE)*/){
 					hits ++;
 				}
-				else if (dLaserBeam < 4 && this->_Map->getCellStatus(gridPosObs.nX, gridPosObs.nY) == Map::OCCUPIED){
+				else if (dLaserBeam < 4 && occupied/* cellStatus == Map::OCCUPIED*/){
 					hits ++;
 				}
 			}
@@ -112,12 +114,11 @@ float Particle::probByScan(LaserProxy* laser){
 	return (hits / 667.0);
 }
 
-//TODO ADI dosent work!
 void Particle::update(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser){
 
 	if (deltaX != 0 || deltaY !=0 || deltaYaw != 0){
-		this->_X += deltaX;
-		this->_Y += deltaY;
+		this->_X += deltaX * 4;
+		this->_Y += deltaY * 4;
 		this->_Yaw += deltaYaw;
 
 		this->updateBel(deltaX, deltaY, deltaYaw, laser);

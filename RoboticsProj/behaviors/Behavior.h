@@ -24,6 +24,7 @@ public:
 	virtual bool startCond() = 0;
 	virtual bool stopCond() = 0;
 	virtual void action() = 0;
+	virtual void printDetails() = 0;
 	Behavior* addBeh(Behavior* next);
 	Behavior* selectNext();
 

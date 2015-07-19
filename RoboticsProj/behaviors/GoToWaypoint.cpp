@@ -25,8 +25,8 @@ void GoToWaypoint::action()
 {
 	//TODO ADI check what happends when there is an opsticle
 	Map::position p = this->_lm ->getBestParticleOnGrid();
-	cout << "Best particle on grid: (" << p.nX*4 << "," << p.nY*4 << "," << p.dAngle/3.14*180 << ")" << endl;
-	cout << "Way Point:     (" << _wayPointX << "," << _wayPointY << ")" << endl;
+	//cout << "Best particle on grid: (" << p.nX*4 << "," << p.nY*4 << "," << p.dAngle/3.14*180 << ")" << endl;
+	//cout << "Way Point:     (" << _wayPointX << "," << _wayPointY << ")" << endl;
 	//float angle = atan2(p.nX - this->_wayPointX, p.nY - this->_wayPointY);
 	float angle = - atan2(this->_wayPointX - p.nX, this->_wayPointY - p.nY);
 	cout << "worldangle = " << angle/3.14*180 << endl;
@@ -39,20 +39,30 @@ void GoToWaypoint::action()
 	}
 	cout << "angle = " << angle/3.14*180 << endl;
 	//this->_robot->setSpeed(0.0, 0);
-	if (-0.2 < angle && angle < 0.2)
+	double angularSpeed;
+	double xSpeed;
+	float angleSpeed;
+	if ((-0.2 < angle && angle < 0.2) && this->_robot->isForwardFree())
 	{
-		cout << "setSpeed 0.3 (FWD)" << endl;
-		this->_robot->setSpeed(0.3, 0);
+		//cout << "setSpeed 0.3 (FWD)" << endl;
+		xSpeed = 0.3;
+		angularSpeed = 0;
 	}
 	else
 	{
-		cout << "setYAW " << angle  << endl;
-		const float ANGLE_SPEED = 0.5;
-		this->_robot->setSpeed(0.05, angle > 0 ? ANGLE_SPEED : -ANGLE_SPEED);
+	//	cout << "setYAW " << angle  << endl;
+		if (!(-0.2 < angle && angle < 0.2)){
+			angleSpeed =  0.5;
+		}
+		else{
+			angleSpeed = 0.2;
+		}
+		xSpeed = 0.05;
+
+		angularSpeed = (angle > 0) ? angleSpeed : (-1) * angleSpeed;
 	}
-	//sleep(1);
-	//this->_robot->setSpeed(0.3,0);
-	//cout << "move" << endl;
+
+	this->_robot->setSpeed(xSpeed,angularSpeed);
 }
 
 bool GoToWaypoint::stopCond()
@@ -61,13 +71,17 @@ bool GoToWaypoint::stopCond()
 	double dis = sqrt(pow(p.nX - this->_wayPointX, 2) +
 			pow(p.nY - this->_wayPointY, 2));
 	//cout << "stopCond " << dis << endl;
-	cout << "Stop condition: paticle pos: (" << p.nX << "," << p.nY << ") WayPoint: (" << _wayPointX << "," << _wayPointY << ")" << endl;
-	cout << "Distance = " << dis << endl;
-	if (dis < 20){
+	//cout << "Stop condition: paticle pos: (" << p.nX << "," << p.nY << ") WayPoint: (" << _wayPointX << "," << _wayPointY << ")" << endl;
+	//cout << "Distance = " << dis << endl;
+	if (dis < 7){
 		return true;
 	}
 
 	return false;
+}
+
+void GoToWaypoint::printDetails(){
+	cout << "new behavior! x - " << this->_wayPointX << " y - " << this->_wayPointY << endl;
 }
 
 GoToWaypoint::~GoToWaypoint() {

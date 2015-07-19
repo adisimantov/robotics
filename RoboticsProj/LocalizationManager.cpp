@@ -20,12 +20,12 @@ LocalizationManager::LocalizationManager(Map* map, LaserProxy* laser){
 	//TODO ADI think if not best to start with only one particle at the known location...
 	this->_maxX = map->row_size / (map->map_res / map->grid_res);
 	this->_maxY = map->col_size / (map->map_res / map->grid_res);
-	double x, y, yaw;
 	Map::position start = ConfigurationManager::getInstance()->getPSourceMap();
 	Particle *p = new Particle(start.nX,start.nY, start.dAngle* M_PI / 180, map);
 	this->_particlesList.push_front(p);
 
-	p->probByScan(laser);
+//	p->probByScan(laser);
+
 	//create a list of Particles
 	/*for (int i = 0; i < 200; i++){
 		x = rand() % (this->_maxX + 1);
@@ -45,8 +45,9 @@ Map::position LocalizationManager::getBestParticleOnGrid(){
 			if (bestParticle == NULL || current->getBelief() > bestParticle->getBelief()){
 				bestParticle = current;
 			}
-			cout << "One Particle: (" << current->getX() << "," << current->getY() << "," << current->getYaw() << "," << current->getBelief() << ")" << endl;
 	}
+	//cout << "best Particle: (" << bestParticle->getX() << "," << bestParticle->getY() << "," << bestParticle->getYaw() << "," << bestParticle->getBelief() << ")" << endl;
+
 
 	return bestParticle->getPositionOnGrid();
 }
@@ -60,7 +61,6 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 
 	Particle* current;
 	double x, y, yaw;
-	int index = 1;
 	int newIndx = 0;
 	list<Particle*> newParticales;
 	list<Particle*> delParticales;
@@ -68,23 +68,21 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 	deltaY 	 *= ConfigurationManager::getInstance()->getDMapRes();
 	for (list<Particle*>::iterator it = this->_particlesList.begin(); it != this->_particlesList.end(); ){
 		current = *it;
-		//cout << index <<  ". x = " << current->getX() << " y = " << current->getY() << " yaw = " << current->getYaw() << " bel " << current->getBelief()<< endl ;
-		index++;
-		//TODO ADI check why the hell does the beleif function is broken!!!!
+		//cout << " x = " << current->getX() / 4 << " y = " << current->getY() / 4 << " yaw = " << current->getYaw() << " bel " << current->getBelief()<< endl ;
 		current->update(deltaX,deltaY,deltaYaw,laser);
 		//cout <<" check create new particles. bel = " << current->getBelief() << endl;
 		if (current->getBelief() > 0.7){
 			//cout << "create!" << endl;
-			//cout << "Create from Particle (" << current->getX()<< "," << current->getY() << "," << current->getYaw() << "," << current->getBelief() << ")" << endl;
+			//	cout << "Create from Particle (" << current->getX()<< "," << current->getY() << "," << current->getYaw() << "," << current->getBelief() << ")" << endl;
 			for (int i = 0; i < 20; i++){
 				newIndx++;
-				x = dRand(current->getX() - 50 < 0 ? 0 : current->getX() -50,
-							current->getX() + 50 > this->_maxX ? this->_maxX : current->getX() + 50);
+				x = dRand(current->getX() - 30 < 0 ? 0 : current->getX() -30,
+							current->getX() + 30 > this->_maxX ? this->_maxX : current->getX() + 30);
 				y = dRand(current->getY() - 30 < 0 ? 0 : current->getY() -30,
-							current->getY() + 50 >this->_maxY ? this->_maxY : current->getY() + 50);
-				yaw = dRand(current->getYaw() - 0.5 < 0 ? 0 : current->getYaw() - 0.5,
-							current->getYaw() + 1 > 6.2 ? 6.2 : current->getYaw() + 1);
-				yaw = dRand(current->getYaw() - 0.5 ,current->getYaw() + 0.5);
+							current->getY() + 30 >this->_maxY ? this->_maxY : current->getY() + 30);
+				yaw = dRand(current->getYaw() - 0.2 < 0 ? 0 : current->getYaw() - 0.2,
+							current->getYaw() + 0.2 > 6.2 ? 6.2 : current->getYaw() + 0.2);
+				//yaw = dRand(current->getYaw() - 0.5 ,current->getYaw() + 0.5);
 				if (yaw > M_PI)
 				{
 					yaw = -(2*M_PI - yaw);
@@ -93,7 +91,7 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 				{
 					yaw = (2*M_PI + yaw);
 				}
-				Particle* p = new Particle(x,y,yaw,current->getBelief(),current->getMap());
+				Particle* p = new Particle(x,y,yaw,current->getBelief() - 0.0001,current->getMap());
 				//p->updateBel(deltaX,deltaY,deltaYaw,laser);
 				//Particle* p = new Particle(x,y,yaw,-1,current->getMap());
 				//cout << "New Particle (" << p->getX()<< "," << p->getY() << "," << p->getYaw() << "," << p->getBelief() << ")" << endl;
@@ -104,9 +102,8 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 			//cout << "belief = " << current->getBelief() << endl;
 		}
 		else if (current->getBelief() <= 0.3){
-			//TODO ADI check if really removes the current particle
+
 	        it = this->_particlesList.erase(it);
-	        //delete current;
 	        delParticales.push_back(current);
 		} else
 		{
@@ -116,8 +113,12 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 	}
 	//cout << "there are " << newIndx << " new particles" << endl;
 	_particlesList.splice(_particlesList.end(),newParticales);
-
+	/*if (!_particlesList.empty()){
+		this->map->printParticle(this->convertParticleList());
+	}*/
 	if (_particlesList.size() < 20){
+		cout << "less then 20!! " << _particlesList.size() << "!! and  " << newIndx << " new ones..." << endl;
+		//cout << "add paarticles" << endl;
 		delParticales.sort(compare_particle);
 		while (_particlesList.size() < 20 && delParticales.size() > 0)
 		{
@@ -125,10 +126,12 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 			delParticales.pop_front();
 			_particlesList.push_back(addPar);
 		}
+		//this->map->printParticle(this->convertParticleList());
+
 	}
 	else if (_particlesList.size() > 200)
 	{
-		_particlesList.sort();
+		_particlesList.sort(compare_particle);
 		while(_particlesList.size() != 200)
 		{
 			_particlesList.pop_back();
@@ -146,10 +149,7 @@ list<Map::position> LocalizationManager::convertParticleList(){
 	Particle* current;
 	for (list<Particle*>::iterator itr = this->_particlesList.begin(); itr != this->_particlesList.end(); itr++){
 		current = *itr;
-		Map::position position;
-		position.nX = (int)current->getX();
-		position.nY = (int)current->getY();
-		convertedList.push_front(position);
+		convertedList.push_front(current->getPositionOnGrid());
 	}
 	return convertedList;
 
@@ -157,5 +157,6 @@ list<Map::position> LocalizationManager::convertParticleList(){
 
 
 LocalizationManager::~LocalizationManager(){
-	 _particlesList.clear();
+	this->map->printParticle(convertParticleList());
+	_particlesList.clear();
 }

@@ -19,6 +19,7 @@ public:
 	bool startCond();
 	bool stopCond();
 	void action();
+	void printDetails();
 	virtual ~GoToWaypoint();
 };
 

@@ -44,6 +44,7 @@ Manager::Manager(Robot* robot, Map* map, Map* inflatedMap) {
 		cout << "(" << curr[0] << "," << curr[1] << ")" << endl;
 		waypointList.pop_front();
 	}*/
+	this->_regularMap->printParticle(waypointList);
 	this->_lm = new LocalizationManager(this->_regularMap, robot->getLaserProxy());
 	Plan* pln = new Plan(robot, this->_lm, waypointList);
 	this->_robot = robot;
@@ -55,10 +56,14 @@ void Manager::run()
 	double x,y,yaw, x1,y1,yaw1;
 
 	_robot->read();
-	x1 = _robot->getPosX();
-	y1 = _robot->getPosY();
+	x1 = (_robot->getPosX() + (this->_regularMap->row_size / 2.0) * 4);
+	y1 =  ((this->_regularMap->col_size / 2.0) - _robot->getPosY()) * 4;
 	yaw1 = _robot->getYaw();
-
+/*	list<Map::position> l;
+	Map::position p = {68,44,0};
+	l.push_back(p);
+	this->_regularMap->printParticle(l);
+	*/
 	if(!(_curr->startCond()))
 		return;
 	_curr->action();
@@ -72,25 +77,26 @@ void Manager::run()
 		{
 			_robot->read();
 
-			x =  _robot->getPosX();
-			y =  _robot->getPosY();
-			yaw =  _robot->getYaw();
-			//cout << "dx = " << (x - x1) << " dy " <<(y - y1) << " dyaw " << (yaw - yaw1) << endl;
-			this->_lm->update((x - x1),(y - y1),(yaw - yaw1),_robot->getLaserProxy());
-			//this->_lm->update((0.234),(0.123),(0.1012),_robot->getLaserProxy());
+				x =  (_robot->getPosX() + (this->_regularMap->row_size / 2.0) * 4);
+				y =  ((this->_regularMap->col_size / 2.0) - _robot->getPosY()) * 4;
+				yaw =  _robot->getYaw();
+				//cout << "dx = " << (x - x1) << " dy " <<(y - y1) << " dyaw " << (yaw - yaw1) << endl;
+				this->_lm->update((x - x1),(y - y1),(yaw - yaw1),_robot->getLaserProxy());
+				//this->_lm->update((0.234),(0.123),(0.1012),_robot->getLaserProxy());
 
-			_robot->read();
+				_robot->read();
 
-			x1 = x;
-			y1 = y;
-			yaw1 = yaw;
+				x1 = x;
+				y1 = y;
+				yaw1 = yaw;
 
-			_curr->action();
+				_curr->action();
+
 		}
 		_curr = _curr->selectNext();
-		_robot->setSpeed(0,0);
 		_robot->read();
 	}
+	_robot->setSpeed(0,0);
 }
 
 Manager::~Manager() {

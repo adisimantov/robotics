@@ -14,10 +14,39 @@ Robot::Robot(char* ip, int port) {
 	_lp = new LaserProxy(_pc);
 
 	_pp->SetMotorEnable(true);
-	_pp->SetOdometry(0,0,0);
 	//For fixing Player's reading BUG
 	for(int i=0;i<15;i++)
 		read();
+}
+
+bool Robot::isRightFree(){
+	for (int i = 100; i<=200 ; i++ ){
+				if (this->getLaserProxy()->GetRange(i) < 1){
+					return false;
+					//cout << "index = " <<  i <<  endl;
+				}
+			}
+	return true;
+}
+
+bool Robot::isLeftFree(){
+	for(int i = 466; i<=566;i++){
+				if (this->getLaserProxy()->GetRange(i) < 1){
+					return false;
+					//cout << "index = " <<  i <<  endl;
+				}
+			}
+	return true;
+}
+
+bool Robot::isForwardFree(){
+	for (int i = 300; i<= 366 ; i++ ){
+				if (this->getLaserProxy()->GetRange(i) < 1){
+					return false;
+					//cout << "index = " <<  i <<  endl;
+				}
+			}
+	return true;
 }
 
 // TODO ADI remove this function!

@@ -58,6 +58,7 @@ public:
 	void updateCellStatus(int nX,int nY, cell cStatus);
 	void printParticle(list<position> particlesList);
 	void printParticle(list<int*> particlesList);
+	bool isOccupied(int x, int y) const;
 };
 
 #endif /* MAP_H_ */

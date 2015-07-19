@@ -48,18 +48,9 @@ public:
 	double getYaw() {
 			return	this->_pp->GetYaw();
 		}
-	bool isRightFree() {
-		if ((*_lp)[50] > 0.5)
-			return true;
-		else
-			return false;
-	}
-	bool isForwardFree() {
-		if ((*_lp)[332] > 0.5)
-			return true;
-		else
-			return false;
-	}
+	bool isRightFree();
+	bool isLeftFree();
+	bool isForwardFree();
 
 	static int getIndexByAngle(float angle);
 	static float getAngleByIndex(int index);

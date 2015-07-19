@@ -134,7 +134,7 @@ Map::Map(const char* filename)
 
 	unsigned char color;
 
-	for (y = 0; y < this->col_size; y++)
+	for (y = 0; y < this->col_size; y++) {
 		for (x = 0; x < this->row_size; x++)
 		{
 			if (this->cMap[x][y] == OCCUPIED)
@@ -146,6 +146,7 @@ Map::Map(const char* filename)
 			navImage[y * this->row_size * 4 + x * 4 + 2] = color;
 			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
 		}
+	}
 	encodeOneStep("NoyTest.png", navImage, this->row_size, this->col_size);
 
 	std::vector<unsigned char>().swap(navImage);
@@ -299,17 +300,16 @@ void Map::printParticle(list<int*> particlesList)
 				navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
 
 			}
-		while(!particlesList.empty())
-		{
-			currNode = particlesList.front();
+
+		for (list<int*>::iterator it = particlesList.begin(); it != particlesList.end(); ){
+			currNode = *it;
 			x=currNode[0];
 			y=currNode[1];
 			navImage[y * this->row_size * 4 + x * 4 + 0] = 0;
 			navImage[y * this->row_size * 4 + x * 4 + 1] = 0;
 			navImage[y * this->row_size * 4 + x * 4 + 2] = 255;
 			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
-			particlesList.pop_front();
-			delete currNode;
+			it++;
 		}
 		encodeOneStep("NoyTestInts.png", navImage, this->row_size, this->col_size);
 
@@ -396,18 +396,33 @@ void Map::printParticle(list<position> particlesList)
 				navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
 
 			}
-		while(!particlesList.empty())
-		{
-			currNode = particlesList.front();
+		for (list<position>::iterator it = particlesList.begin(); it != particlesList.end(); ){
+			currNode = *it;
 			x=currNode.nX;
 			y=currNode.nY;
 			navImage[y * this->row_size * 4 + x * 4 + 0] = 0;
 			navImage[y * this->row_size * 4 + x * 4 + 1] = 255;
 			navImage[y * this->row_size * 4 + x * 4 + 2] = 0;
 			navImage[y * this->row_size * 4 + x * 4 + 3] = 255;
-			particlesList.pop_front();
+			it++;
 		}
-		encodeOneStep("NoyTest.png", navImage, this->row_size, this->col_size);
+		encodeOneStep("Test.png", navImage, this->row_size, this->col_size);
 
 		std::vector<unsigned char>().swap(navImage);
+}
+
+
+bool Map::isOccupied(int x, int y) const{
+
+for (int i = x-1; i <= x+1 ; i++){
+	for (int j = y-1; j<= y+1; j++){
+		if (x >= 0 && y >= 0 && x < this->row_size && y < this->col_size){
+			if (this->getCellStatus(x,y) == OCCUPIED){
+				return true;
+			}
+		}
+	}
+}
+
+return false;
 }
