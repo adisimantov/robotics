@@ -5,15 +5,15 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../behaviors/Behavior.cpp \
-../behaviors/TurnRight.cpp 
+../behaviors/GoToWaypoint.cpp 
 
 OBJS += \
 ./behaviors/Behavior.o \
-./behaviors/TurnRight.o 
+./behaviors/GoToWaypoint.o 
 
 CPP_DEPS += \
 ./behaviors/Behavior.d \
-./behaviors/TurnRight.d 
+./behaviors/GoToWaypoint.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

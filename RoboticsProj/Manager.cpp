@@ -58,12 +58,14 @@ void Manager::run()
 	_robot->read();
 	x1 = (_robot->getPosX() + (this->_regularMap->row_size / 2.0) * 4);
 	y1 =  ((this->_regularMap->col_size / 2.0) - _robot->getPosY()) * 4;
-	yaw1 = _robot->getYaw();
-/*	list<Map::position> l;
-	Map::position p = {68,44,0};
+	/*yaw1 = _robot->getYaw();
+	list<Map::position> l;
+	Map::position p = {52,46,0};
 	l.push_back(p);
-	this->_regularMap->printParticle(l);
-	*/
+	p = {74,47,0};
+	l.push_back(p);
+	this->_regularMap->printParticle(l);*/
+
 	if(!(_curr->startCond()))
 		return;
 	_curr->action();

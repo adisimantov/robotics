@@ -1,1 +1,3 @@
-WaypointsManager.d: ../WaypointsManager.cpp
+WaypointsManager.d: ../WaypointsManager.cpp ../WaypointsManager.h
+
+../WaypointsManager.h:

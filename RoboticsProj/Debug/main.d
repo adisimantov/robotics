@@ -13,7 +13,15 @@ main.d: ../main.cpp ../Robot.h \
  /usr/local/include/player-2.0/libplayerc++/playererror.h \
  /usr/local/include/player-2.0/libplayerc++/clientproxy.h ../Manager.h \
  ../Plans/Plan.h ../Plans/../behaviors/Behavior.h \
- ../Plans/../behaviors/../Robot.h ../Plans/../Robot.h ../pngUtil.h
+ ../Plans/../behaviors/../Robot.h \
+ ../Plans/../behaviors/../LocalizationManager.h \
+ ../Plans/../behaviors/../Robot.h ../Plans/../behaviors/../Particle.h \
+ ../Plans/../behaviors/../Map.h \
+ ../Plans/../behaviors/../ConfigurationManager.h \
+ ../Plans/../behaviors/GoToWaypoint.h ../Plans/../behaviors/Behavior.h \
+ ../Plans/../behaviors/../WaypointsManager.h ../Plans/../Robot.h ../Map.h \
+ ../LocalizationManager.h ../PathPlanner.h ../ConfigurationManager.h \
+ ../pngUtil.h
 
 ../Robot.h:
 
@@ -51,6 +59,30 @@ main.d: ../main.cpp ../Robot.h \
 
 ../Plans/../behaviors/../Robot.h:
 
+../Plans/../behaviors/../LocalizationManager.h:
+
+../Plans/../behaviors/../Robot.h:
+
+../Plans/../behaviors/../Particle.h:
+
+../Plans/../behaviors/../Map.h:
+
+../Plans/../behaviors/../ConfigurationManager.h:
+
+../Plans/../behaviors/GoToWaypoint.h:
+
+../Plans/../behaviors/Behavior.h:
+
+../Plans/../behaviors/../WaypointsManager.h:
+
 ../Plans/../Robot.h:
+
+../Map.h:
+
+../LocalizationManager.h:
+
+../PathPlanner.h:
+
+../ConfigurationManager.h:
 
 ../pngUtil.h:

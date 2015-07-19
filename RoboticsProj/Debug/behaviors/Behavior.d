@@ -12,7 +12,10 @@ behaviors/Behavior.d: ../behaviors/Behavior.cpp ../behaviors/Behavior.h \
  /usr/local/include/player-2.0/libplayerc++/playerc++config.h \
  /usr/local/include/player-2.0/libplayerc++/playerclient.h \
  /usr/local/include/player-2.0/libplayerc++/playererror.h \
- /usr/local/include/player-2.0/libplayerc++/clientproxy.h
+ /usr/local/include/player-2.0/libplayerc++/clientproxy.h \
+ ../behaviors/../LocalizationManager.h ../behaviors/../Robot.h \
+ ../behaviors/../Particle.h ../behaviors/../Map.h \
+ ../behaviors/../ConfigurationManager.h
 
 ../behaviors/Behavior.h:
 
@@ -43,3 +46,13 @@ behaviors/Behavior.d: ../behaviors/Behavior.cpp ../behaviors/Behavior.h \
 /usr/local/include/player-2.0/libplayerc++/playererror.h:
 
 /usr/local/include/player-2.0/libplayerc++/clientproxy.h:
+
+../behaviors/../LocalizationManager.h:
+
+../behaviors/../Robot.h:
+
+../behaviors/../Particle.h:
+
+../behaviors/../Map.h:
+
+../behaviors/../ConfigurationManager.h:

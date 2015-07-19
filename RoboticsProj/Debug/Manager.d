@@ -13,7 +13,14 @@ Manager.d: ../Manager.cpp ../Manager.h ../Plans/Plan.h \
  /usr/local/include/player-2.0/libplayerc++/playerclient.h \
  /usr/local/include/player-2.0/libplayerc++/playererror.h \
  /usr/local/include/player-2.0/libplayerc++/clientproxy.h \
- ../Plans/../Robot.h ../Robot.h
+ ../Plans/../behaviors/../LocalizationManager.h \
+ ../Plans/../behaviors/../Robot.h ../Plans/../behaviors/../Particle.h \
+ ../Plans/../behaviors/../Map.h \
+ ../Plans/../behaviors/../ConfigurationManager.h \
+ ../Plans/../behaviors/GoToWaypoint.h ../Plans/../behaviors/Behavior.h \
+ ../Plans/../behaviors/../WaypointsManager.h ../Plans/../Robot.h \
+ ../Robot.h ../Map.h ../LocalizationManager.h ../PathPlanner.h \
+ ../ConfigurationManager.h
 
 ../Manager.h:
 
@@ -49,6 +56,30 @@ Manager.d: ../Manager.cpp ../Manager.h ../Plans/Plan.h \
 
 /usr/local/include/player-2.0/libplayerc++/clientproxy.h:
 
+../Plans/../behaviors/../LocalizationManager.h:
+
+../Plans/../behaviors/../Robot.h:
+
+../Plans/../behaviors/../Particle.h:
+
+../Plans/../behaviors/../Map.h:
+
+../Plans/../behaviors/../ConfigurationManager.h:
+
+../Plans/../behaviors/GoToWaypoint.h:
+
+../Plans/../behaviors/Behavior.h:
+
+../Plans/../behaviors/../WaypointsManager.h:
+
 ../Plans/../Robot.h:
 
 ../Robot.h:
+
+../Map.h:
+
+../LocalizationManager.h:
+
+../PathPlanner.h:
+
+../ConfigurationManager.h:

@@ -19,7 +19,7 @@ int main()
 	cout << angle << endl;*/
 	try{
 
-	Robot robot("localhost",6665);
+	Robot robot("10.10.245.65",6665);
 
 	Map map("roboticLabMap.png");
 	Map mapInf = map.inflateMap(ConfigurationManager::getInstance()->getDRobotW()*1.2,

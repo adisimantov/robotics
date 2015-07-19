@@ -46,8 +46,8 @@ Map::position LocalizationManager::getBestParticleOnGrid(){
 				bestParticle = current;
 			}
 	}
-	//cout << "best Particle: (" << bestParticle->getX() << "," << bestParticle->getY() << "," << bestParticle->getYaw() << "," << bestParticle->getBelief() << ")" << endl;
-
+	cout << "best Particle: (" << bestParticle->getX() << "," << bestParticle->getY() << "," << bestParticle->getYaw() << "," << bestParticle->getBelief() << ")" << endl;
+	cout << "best Particle: (" << bestParticle->getX() << "," << bestParticle->getY() << "," << bestParticle->getYaw()*3.14/180 << "," << bestParticle->getBelief() << ")" << endl;
 
 	return bestParticle->getPositionOnGrid();
 }
@@ -152,7 +152,6 @@ list<Map::position> LocalizationManager::convertParticleList(){
 		convertedList.push_front(current->getPositionOnGrid());
 	}
 	return convertedList;
-
 }
 
 

@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../LocalizationManager.cpp \
 ../Manager.cpp \
 ../Map.cpp \
+../Node.cpp \
 ../Particle.cpp \
 ../PathPlanner.cpp \
 ../Robot.cpp \
@@ -21,6 +22,7 @@ OBJS += \
 ./LocalizationManager.o \
 ./Manager.o \
 ./Map.o \
+./Node.o \
 ./Particle.o \
 ./PathPlanner.o \
 ./Robot.o \
@@ -34,6 +36,7 @@ CPP_DEPS += \
 ./LocalizationManager.d \
 ./Manager.d \
 ./Map.d \
+./Node.d \
 ./Particle.d \
 ./PathPlanner.d \
 ./Robot.d \
