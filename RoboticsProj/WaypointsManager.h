@@ -9,11 +9,12 @@
 #define WAYPOINTSMANAGER_H_
 
 #include <list>
+#include "Map.h"
 using namespace std;
 class WaypointsManager
 {
 public:
-	list<int*> choosePoints(list<int*> list);
+	list<int*> choosePoints(list<int*> list, const Map& map);
 };
 
 

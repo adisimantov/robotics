@@ -7,12 +7,16 @@
 
 #include "LocalizationManager.h"
 
-
 double dRand(double fMin, double fMax)
 {
     double f = (double)rand() / RAND_MAX;
     return fMin + f * (fMax - fMin);
 }
+
+static double deltaX = 0;
+static double deltaY = 0;
+static double deltaYaw = 0;
+
 
 LocalizationManager::LocalizationManager(Map* map, LaserProxy* laser){
 

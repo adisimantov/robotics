@@ -16,7 +16,6 @@
 #define SMALL_ANGLE 0.5
 #define SHORT_DIST 3
 #define LONG_DIST 57
-//TODO: ADI find normalize factor
 #define NORMALIZE_FACTOR 1.52
 
 class Particle

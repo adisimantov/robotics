@@ -19,15 +19,16 @@ int main()
 	cout << angle << endl;*/
 	try{
 
-	Robot robot("10.10.245.65",6665);
+//	Robot robot("10.10.245.65",6665);
+Robot robot("localhost",6665);
 
 	Map map("roboticLabMap.png");
-	Map mapInf = map.inflateMap(ConfigurationManager::getInstance()->getDRobotW()*1.2,
-				   ConfigurationManager::getInstance()->getDRobotH()*1.2);
+	Map mapInf = map.inflateMap(ConfigurationManager::getInstance()->getDRobotW()*1.3,
+				   ConfigurationManager::getInstance()->getDRobotH()*1.3);
 
 	Manager manager(&robot, &map, &mapInf);
 	manager.run();
-	//robot.Move();
+	//robot.Move
 	} catch (const std::exception& e)
 	{
 		cout << e.what() << endl;

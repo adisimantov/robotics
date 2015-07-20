@@ -33,17 +33,11 @@ Manager::Manager(Robot* robot, Map* map, Map* inflatedMap) {
 	cout << "a star finish"<< endl;
 	//map->printParticle(aStarList);
 	cout << "waypoint start"<< endl;
-	list<int*> waypointList = w.choosePoints(aStarList);
+	list<int*> waypointList = w.choosePoints(aStarList, *_inflatedMap);
 	cout << "waypoint finish"<< endl;
 
-	//map->printParticle(waypointList);
+	map->printParticle(waypointList);
 
-/*	int *curr;
-	while (!waypointList.empty()){
-		curr = waypointList.front();
-		cout << "(" << curr[0] << "," << curr[1] << ")" << endl;
-		waypointList.pop_front();
-	}*/
 	this->_regularMap->printParticle(waypointList);
 	this->_lm = new LocalizationManager(this->_regularMap, robot->getLaserProxy());
 	Plan* pln = new Plan(robot, this->_lm, waypointList);
@@ -58,11 +52,9 @@ void Manager::run()
 	_robot->read();
 	x1 = (_robot->getPosX() + (this->_regularMap->row_size / 2.0) * 4);
 	y1 =  ((this->_regularMap->col_size / 2.0) - _robot->getPosY()) * 4;
-	/*yaw1 = _robot->getYaw();
-	list<Map::position> l;
-	Map::position p = {52,46,0};
-	l.push_back(p);
-	p = {74,47,0};
+	yaw1 = _robot->getYaw();
+	/*list<Map::position> l;
+	Map::position p = {86,48,0};
 	l.push_back(p);
 	this->_regularMap->printParticle(l);*/
 

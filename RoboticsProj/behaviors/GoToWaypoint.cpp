@@ -42,7 +42,7 @@ void GoToWaypoint::action()
 	double angularSpeed;
 	double xSpeed;
 	float angleSpeed;
-	if ((-0.1 < angle && angle < 0.1) && this->_robot->isForwardFree())
+	if ((-0.15 < angle && angle < 0.15) && this->_robot->isForwardFree())
 	{
 		//cout << "setSpeed 0.3 (FWD)" << endl;
 		xSpeed = 0.3;
@@ -51,12 +51,8 @@ void GoToWaypoint::action()
 	else
 	{
 	//	cout << "setYAW " << angle  << endl;
-		if (!(-0.1 < angle && angle < 0.1)){
-			angleSpeed =  0.5;
-		}
-		else{
-			angleSpeed = 0.2;
-		}
+
+		angleSpeed =  0.3;
 		xSpeed = 0.05;
 
 		angularSpeed = (angle > 0) ? angleSpeed : (-1) * angleSpeed;
@@ -85,7 +81,7 @@ bool GoToWaypoint::stopCond()
 	//cout << "stopCond " << dis << endl;
 	cout << "Stop condition: paticle pos: (" << p.nX << "," << p.nY << ") WayPoint: (" << _wayPointX << "," << _wayPointY << ")" << endl;
 	cout << "Distance = " << dis << endl;
-	if (dis < 5){
+	if (dis < 7){
 		return true;
 	}
 

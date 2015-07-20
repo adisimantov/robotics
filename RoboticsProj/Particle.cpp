@@ -117,8 +117,8 @@ float Particle::probByScan(LaserProxy* laser){
 void Particle::update(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser){
 
 	if (deltaX != 0 || deltaY !=0 || deltaYaw != 0){
-		this->_X += deltaX * 4;
-		this->_Y += deltaY * 4;
+		this->_X += deltaX;// * 4;
+		this->_Y += deltaY;// * 4;
 		this->_Yaw += deltaYaw;
 
 		this->updateBel(deltaX, deltaY, deltaYaw, laser);
@@ -127,8 +127,14 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw , LaserProxy
 
 void Particle::updateBel(double deltaX, double deltaY, double deltaYaw , LaserProxy* laser)
 {
+	float probByScan;
 	double predBel = this->_Bel * this->probByMov(deltaX,deltaY,deltaYaw);
-	this->_Bel = predBel * this->probByScan(laser) * NORMALIZE_FACTOR;
+	probByScan = this->probByScan(laser);
+	this->_Bel = predBel * probByScan * NORMALIZE_FACTOR;
+	if(probByScan * 667 > 280 && _Bel < 0.3)
+	{
+		_Bel = 0.8;
+	}
 	if (this->_Bel > 1){
 		this->_Bel = 1;
 	}
