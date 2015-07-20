@@ -56,12 +56,41 @@ bool compare_particle (Particle* first, Particle* second)
 {
 	return first->getBelief() >= second->getBelief();
 }
+
+void LocalizationManager::createNewParticles(Particle* current,
+		list<Particle*>& newParticales) {
+	//cout << "create!" << endl;
+	//	cout << "Create from Particle (" << current->getX()<< "," << current->getY() << "," << current->getYaw() << "," << current->getBelief() << ")" << endl;
+	for (int i = 0; i < 40; i++) {
+		double x = dRand(current->getX() - 30 < 0 ? 0 : current->getX() - 30,
+				current->getX() + 30 > this->_maxX ?
+						this->_maxX : current->getX() + 30);
+		double y = dRand(current->getY() - 30 < 0 ? 0 : current->getY() - 30,
+				current->getY() + 30 > this->_maxY ?
+						this->_maxY : current->getY() + 30);
+		double yaw = dRand(
+				current->getYaw() - 0.5 < 0 ? 0 : current->getYaw() - 0.5,
+				current->getYaw() + 0.5 > 6.2 ? 6.2 : current->getYaw() + 0.5);
+		//yaw = dRand(current->getYaw() - 0.5 ,current->getYaw() + 0.5);
+		if (yaw > M_PI) {
+			yaw = -(2 * M_PI - yaw);
+		} else if (yaw < -M_PI) {
+			yaw = (2 * M_PI + yaw);
+		}
+		Particle* p = new Particle(x, y, yaw, current->getBelief() - 0.0001,
+				current->getMap());
+		//p->updateBel(deltaX,deltaY,deltaYaw,laser);
+		//Particle* p = new Particle(x,y,yaw,-1,current->getMap());
+		//cout << "New Particle (" << p->getX()<< "," << p->getY() << "," << p->getYaw() << "," << p->getBelief() << ")" << endl;
+		//this->_particlesList.push_front(p);
+		newParticales.push_back(p);
+	}
+}
+
 void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, LaserProxy* laser)
 {
 
 	Particle* current;
-	double x, y, yaw;
-	int newIndx = 0;
 	list<Particle*> newParticales;
 	list<Particle*> delParticales;
 	deltaX 	 *= ConfigurationManager::getInstance()->getDMapRes();
@@ -74,30 +103,7 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 		if (current->getBelief() > 0.7){
 			//cout << "create!" << endl;
 			//	cout << "Create from Particle (" << current->getX()<< "," << current->getY() << "," << current->getYaw() << "," << current->getBelief() << ")" << endl;
-			for (int i = 0; i < 20; i++){
-				newIndx++;
-				x = dRand(current->getX() - 30 < 0 ? 0 : current->getX() -30,
-							current->getX() + 30 > this->_maxX ? this->_maxX : current->getX() + 30);
-				y = dRand(current->getY() - 30 < 0 ? 0 : current->getY() -30,
-							current->getY() + 30 >this->_maxY ? this->_maxY : current->getY() + 30);
-				yaw = dRand(current->getYaw() - 0.2 < 0 ? 0 : current->getYaw() - 0.2,
-							current->getYaw() + 0.2 > 6.2 ? 6.2 : current->getYaw() + 0.2);
-				//yaw = dRand(current->getYaw() - 0.5 ,current->getYaw() + 0.5);
-				if (yaw > M_PI)
-				{
-					yaw = -(2*M_PI - yaw);
-				}
-				else if (yaw < -M_PI)
-				{
-					yaw = (2*M_PI + yaw);
-				}
-				Particle* p = new Particle(x,y,yaw,current->getBelief() - 0.0001,current->getMap());
-				//p->updateBel(deltaX,deltaY,deltaYaw,laser);
-				//Particle* p = new Particle(x,y,yaw,-1,current->getMap());
-				//cout << "New Particle (" << p->getX()<< "," << p->getY() << "," << p->getYaw() << "," << p->getBelief() << ")" << endl;
-				//this->_particlesList.push_front(p);
-				newParticales.push_back(p);
-			}
+			createNewParticles(current, newParticales);
 			it++;
 			//cout << "belief = " << current->getBelief() << endl;
 		}
@@ -112,12 +118,11 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 
 	}
 	//cout << "there are " << newIndx << " new particles" << endl;
-	_particlesList.splice(_particlesList.end(),newParticales);
 	/*if (!_particlesList.empty()){
 		this->map->printParticle(this->convertParticleList());
 	}*/
-	if (_particlesList.size() < 20){
-		cout << "less then 20!! " << _particlesList.size() << "!! and  " << newIndx << " new ones..." << endl;
+	/*if (_particlesList.size() < 20){
+		cout << "less then 20!! " << _particlesList.size() << endl;
 		//cout << "add paarticles" << endl;
 		delParticales.sort(compare_particle);
 		while (_particlesList.size() < 20 && delParticales.size() > 0)
@@ -126,10 +131,28 @@ void LocalizationManager::update(double deltaX, double deltaY, double deltaYaw, 
 			delParticales.pop_front();
 			_particlesList.push_back(addPar);
 		}
-		//this->map->printParticle(this->convertParticleList());
+		this->map->printParticle(this->convertParticleList());
+
+	}*/
+	bool check = false;
+	if (_particlesList.empty()){
+			delParticales.sort(compare_particle);
+
+			Particle *addPar = delParticales.front();
+			delParticales.pop_front();
+			Particle* p = new Particle(addPar->getX(),addPar->getY(),addPar->getYaw(),1,addPar->getMap());
+			createNewParticles(p, newParticales);
+			check = true;
 
 	}
-	else if (_particlesList.size() > 200)
+
+	_particlesList.splice(_particlesList.end(),newParticales);
+
+	if (check){
+		//this->map->printParticle(this->convertParticleList());
+	}
+
+	if (_particlesList.size() > 200)
 	{
 		_particlesList.sort(compare_particle);
 		while(_particlesList.size() != 200)

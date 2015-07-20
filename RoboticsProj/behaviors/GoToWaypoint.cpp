@@ -85,7 +85,8 @@ bool GoToWaypoint::stopCond()
 	//cout << "stopCond " << dis << endl;
 	cout << "Stop condition: paticle pos: (" << p.nX << "," << p.nY << ") WayPoint: (" << _wayPointX << "," << _wayPointY << ")" << endl;
 	cout << "Distance = " << dis << endl;
-	if (dis < 5){
+	//best for now is 8!
+	if (dis < 7){
 		return true;
 	}
 

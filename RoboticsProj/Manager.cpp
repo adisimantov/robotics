@@ -99,6 +99,7 @@ void Manager::run()
 		_robot->read();
 	}
 	_robot->setSpeed(0,0);
+	cout << "the end:)" << endl;
 }
 
 Manager::~Manager() {

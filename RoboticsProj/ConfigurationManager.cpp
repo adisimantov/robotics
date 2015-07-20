@@ -71,7 +71,7 @@ void ConfigurationManager::loadParameters()
 		this->pSource.nY = this->pSourceMap.nY / diference;
 		this->pSource.dAngle = this->pSourceMap.dAngle;
 		this->pTarget.nX = this->pTargetMap.nX / diference;
-		this->pTarget.nY = this->pTargetMap.nX / diference;
+		this->pTarget.nY = this->pTargetMap.nY / diference;
 
 		fParameters.close();
 	}

@@ -23,6 +23,8 @@ private:
 	int _maxY;
 	Map* map;
 
+	void createNewParticles(Particle* current, list<Particle*>& newParticales);
+
 public:
 	LocalizationManager(Map* map, LaserProxy* laser);
 	void update(double deltaX, double deltaY, double deltaYaw, LaserProxy* laser);
